@@ -3,6 +3,7 @@ include_once "../model/category_model.php";
 class Controller
 {
     private $categoryModel;
+    /*
     public function controlContent()
     {
         if (isset($_GET['add-category'])) {
@@ -10,17 +11,15 @@ class Controller
             if (isset($_POST['add_category'])) {
                 $category_name = $_POST['category_name'];
                 $category_obj = $_POST['category_obj'];
-                if (!$this->categoryModel->get_category_by_obj_name($category_name, $category_obj)){
+                if (!$this->categoryModel->get_category_by_obj_name($category_name, $category_obj)) {
                     $insert_category = $this->categoryModel->insert_category($category_name, $category_obj);
-                }
-                else {
+                } else {
                     echo "<script>window.location = '../app/index.php?add-category'</script>";
                 }
             }
             $show_category = $this->categoryModel->show_category();
             include_once '../view/add-category.php';
-        }
-        else if (isset($_GET['delete-category'])) {
+        } else if (isset($_GET['delete-category'])) {
             $this->categoryModel = new Category_Model();
             if (!isset($_GET['category_id']) || $_GET['category_id'] == null) {
                 echo "<script>window.location = '../app/index.php?add-category'</script>";
@@ -29,36 +28,45 @@ class Controller
             }
             $delete_category = $this->categoryModel->delete_category($category_id);
             echo "<script>window.location = '../app/index.php?add-category'</script>";
-        }else if (isset($_GET['edit-category'])) {
+        } else if (isset($_GET['edit-category'])) {
             $this->categoryModel = new Category_Model();
-            $category_id = $_GET['category_id'];    
+            $category_id = $_GET['category_id'];
             $edit_category = $this->categoryModel->get_category($category_id);
             $result = $edit_category->fetch_assoc();
             include_once '../view/edit-category.php';
-            if($_SERVER['REQUEST_METHOD'] == 'POST') {
+            if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 $category_name = $_POST['category_name'];
                 $category_obj = $_POST['category_obj'];
                 $update_category = $this->categoryModel->update_category($category_name, $category_obj, $category_id);
                 echo "<script>window.location = '../app/index.php?add-category'</script>";
             }
-        }
-        else {
+        } else {
             include_once '../view/dashboard.php';
         }
     }
+     */
     public function invoke()
     {
-        if (isset($_GET["controller"])) {
-            $action = $_GET["action"];
-            $controller = $_GET['controller'];
-            require('../controller/' . $controller . 'Controller.php'); 
-            $controller = ucfirst($controller); 
-            $request = new $controller;
-            
-        } else {
-            session_start();
-            $this->controlContent();
-        }
-        
+
+        // session_start();
+        $this->controlHeader();
+        $this->controlFooter();
+    }
+    public function controlHeader()
+    {
+        include_once "../model/category_model.php";
+        $category_model = new Category_Model();
+        include_once "../view/header.php";
+    }
+
+    public function controlContent()
+    {
+
+        include_once "../view/homepage.php";
+    }
+
+    public function controlFooter()
+    {
+        include_once "../view/footer.php";
     }
 }
