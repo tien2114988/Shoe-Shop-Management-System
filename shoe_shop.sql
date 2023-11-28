@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 16, 2023 at 04:48 PM
+-- Generation Time: Nov 28, 2023 at 01:24 PM
 -- Server version: 10.4.28-MariaDB
 -- PHP Version: 8.2.4
 
@@ -18,7 +18,7 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Database: `test`
+-- Database: `shoe-shop-database`
 --
 
 -- --------------------------------------------------------
@@ -91,7 +91,8 @@ CREATE TABLE `customeraccount` (
   `avatar` varchar(100) DEFAULT NULL,
   `role` varchar(20) DEFAULT NULL,
   `username` varchar(50) DEFAULT NULL,
-  `password` varchar(100) DEFAULT NULL
+  `password` varchar(100) DEFAULT NULL,
+  `current_order_id` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 
 -- --------------------------------------------------------
@@ -213,7 +214,8 @@ ALTER TABLE `color_has_sizes`
 -- Indexes for table `customeraccount`
 --
 ALTER TABLE `customeraccount`
-  ADD PRIMARY KEY (`id`);
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `fk_customer_order` (`current_order_id`);
 
 --
 -- Indexes for table `notification`
@@ -328,6 +330,12 @@ ALTER TABLE `color_has_sizes`
   ADD CONSTRAINT `color_has_sizes_ibfk_1` FOREIGN KEY (`product_id`) REFERENCES `product` (`id`),
   ADD CONSTRAINT `color_has_sizes_ibfk_2` FOREIGN KEY (`color_id`) REFERENCES `color` (`id`),
   ADD CONSTRAINT `color_has_sizes_ibfk_3` FOREIGN KEY (`size_id`) REFERENCES `size` (`id`);
+
+--
+-- Constraints for table `customeraccount`
+--
+ALTER TABLE `customeraccount`
+  ADD CONSTRAINT `fk_customer_order` FOREIGN KEY (`current_order_id`) REFERENCES `orderdetails` (`id`);
 
 --
 -- Constraints for table `notification`
