@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 16, 2023 at 04:48 PM
+-- Generation Time: Nov 28, 2023 at 05:28 PM
 -- Server version: 10.4.28-MariaDB
 -- PHP Version: 8.2.4
 
@@ -18,7 +18,7 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Database: `test`
+-- Database: `shoe-shop-database`
 --
 
 -- --------------------------------------------------------
@@ -37,6 +37,31 @@ CREATE TABLE `address` (
   `phone_number` varchar(20) DEFAULT NULL,
   `default_address` tinyint(1) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `cart`
+--
+
+CREATE TABLE `cart` (
+  `id` int(11) NOT NULL,
+  `customer_id` int(11) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `cart_item`
+--
+
+CREATE TABLE `cart_item` (
+  `cart_id` int(11) DEFAULT NULL,
+  `product_id` int(11) DEFAULT NULL,
+  `color_id` int(11) DEFAULT NULL,
+  `size_id` int(11) DEFAULT NULL,
+  `quantity` int(11) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
@@ -130,16 +155,17 @@ CREATE TABLE `orderdetails` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `order_has_product`
+-- Table structure for table `order_item`
 --
 
-CREATE TABLE `order_has_product` (
+CREATE TABLE `order_item` (
   `order_id` int(11) NOT NULL,
   `product_id` int(11) NOT NULL,
   `color_id` int(11) NOT NULL,
   `size_id` int(11) NOT NULL,
-  `product_count` int(11) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
+  `quantity` int(11) NOT NULL,
+  `price_per_unit` float NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
@@ -190,6 +216,22 @@ ALTER TABLE `address`
   ADD KEY `user_id` (`user_id`);
 
 --
+-- Indexes for table `cart`
+--
+ALTER TABLE `cart`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `customer_id` (`customer_id`);
+
+--
+-- Indexes for table `cart_item`
+--
+ALTER TABLE `cart_item`
+  ADD UNIQUE KEY `cart_id` (`cart_id`,`product_id`,`color_id`,`size_id`),
+  ADD KEY `product_id` (`product_id`),
+  ADD KEY `color_id` (`color_id`),
+  ADD KEY `size_id` (`size_id`);
+
+--
 -- Indexes for table `category`
 --
 ALTER TABLE `category`
@@ -231,9 +273,9 @@ ALTER TABLE `orderdetails`
   ADD KEY `customer_id` (`customer_id`);
 
 --
--- Indexes for table `order_has_product`
+-- Indexes for table `order_item`
 --
-ALTER TABLE `order_has_product`
+ALTER TABLE `order_item`
   ADD PRIMARY KEY (`order_id`,`product_id`,`color_id`,`size_id`),
   ADD KEY `product_id` (`product_id`),
   ADD KEY `color_id` (`color_id`),
@@ -267,6 +309,12 @@ ALTER TABLE `size`
 -- AUTO_INCREMENT for table `address`
 --
 ALTER TABLE `address`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `cart`
+--
+ALTER TABLE `cart`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
@@ -322,6 +370,21 @@ ALTER TABLE `address`
   ADD CONSTRAINT `address_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `customeraccount` (`id`);
 
 --
+-- Constraints for table `cart`
+--
+ALTER TABLE `cart`
+  ADD CONSTRAINT `cart_ibfk_1` FOREIGN KEY (`customer_id`) REFERENCES `customeraccount` (`id`);
+
+--
+-- Constraints for table `cart_item`
+--
+ALTER TABLE `cart_item`
+  ADD CONSTRAINT `cart_item_ibfk_1` FOREIGN KEY (`cart_id`) REFERENCES `cart` (`id`),
+  ADD CONSTRAINT `cart_item_ibfk_2` FOREIGN KEY (`product_id`) REFERENCES `product` (`id`),
+  ADD CONSTRAINT `cart_item_ibfk_3` FOREIGN KEY (`color_id`) REFERENCES `color` (`id`),
+  ADD CONSTRAINT `cart_item_ibfk_4` FOREIGN KEY (`size_id`) REFERENCES `size` (`id`);
+
+--
 -- Constraints for table `color_has_sizes`
 --
 ALTER TABLE `color_has_sizes`
@@ -343,13 +406,13 @@ ALTER TABLE `orderdetails`
   ADD CONSTRAINT `orderdetails_ibfk_1` FOREIGN KEY (`customer_id`) REFERENCES `customeraccount` (`id`);
 
 --
--- Constraints for table `order_has_product`
+-- Constraints for table `order_item`
 --
-ALTER TABLE `order_has_product`
-  ADD CONSTRAINT `order_has_product_ibfk_1` FOREIGN KEY (`order_id`) REFERENCES `orderdetails` (`id`),
-  ADD CONSTRAINT `order_has_product_ibfk_2` FOREIGN KEY (`product_id`) REFERENCES `product` (`id`),
-  ADD CONSTRAINT `order_has_product_ibfk_3` FOREIGN KEY (`color_id`) REFERENCES `color` (`id`),
-  ADD CONSTRAINT `order_has_product_ibfk_4` FOREIGN KEY (`size_id`) REFERENCES `size` (`id`);
+ALTER TABLE `order_item`
+  ADD CONSTRAINT `order_item_ibfk_1` FOREIGN KEY (`order_id`) REFERENCES `orderdetails` (`id`),
+  ADD CONSTRAINT `order_item_ibfk_2` FOREIGN KEY (`product_id`) REFERENCES `product` (`id`),
+  ADD CONSTRAINT `order_item_ibfk_3` FOREIGN KEY (`color_id`) REFERENCES `color` (`id`),
+  ADD CONSTRAINT `order_item_ibfk_4` FOREIGN KEY (`size_id`) REFERENCES `size` (`id`);
 
 --
 -- Constraints for table `product`
