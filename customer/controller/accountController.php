@@ -8,10 +8,14 @@ class Account
         require('../model/userModel.php');
 
         $userModel = new UserModel();
-       
+        if (isset($_GET['action'])) {
+            echo "123";
+            include_once "../view/account.php";
+        }
     }
 
-   public function getInformation(){
-
-   }
+    public function getInformation()
+    {
+        echo "123";
+    }
 }
