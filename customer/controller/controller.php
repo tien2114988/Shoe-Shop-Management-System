@@ -3,15 +3,13 @@ class Controller
 {
     public function invoke()
     {
+
         if (isset($_GET["controller"])) {
-            
             $action = $_GET["action"];
             $controller = $_GET['controller'];
-            
-            require('../controller/' . $controller . 'Controller.php'); 
-            $controller = ucfirst($controller); 
+            require('../controller/' . $controller . 'Controller.php');
+            $controller = ucfirst($controller);
             $request = new $controller;
-            
         } else {
             session_start();
             $this->controlHeader();
@@ -42,11 +40,14 @@ class Controller
             include_once "../view/item-list.php";
         } else if (isset($_GET["detail_item"])) {
             include_once "../view/detail-item.php";
+        } else if (isset($_GET["account"])) {
+            require('../controller/accountController.php');
+            $request = new Account;
+            $request->getInformation();
         } else {
             include_once "../view/homepage.php";
         }
     }
-
     public function controlFooter()
     {
         include_once "../view/footer.php";
