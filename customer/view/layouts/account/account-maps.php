@@ -6,7 +6,7 @@
         <div class="account__information-detail d-flex justify-content-between align-items-start mt-2">
             <div class="user d-flex flex-column justify-content-center p-5 w-25">
                 <div class="user__avatar d-flex align-items-center flex-column">
-                    <img src="../view/assets/img/avatar/avatar9.jpg">
+                    <img src="../view/assets/img/avatar/avatar9.jpg"/>
                     <h5>Xin chao Nguyen Tho</h5>
                 </div>
                 <div class="user__menu mt-3">
