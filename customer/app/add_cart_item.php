@@ -91,7 +91,7 @@ if (!$db->select($product_check_q)) {
                     SET product_count = product_count + ?
                     WHERE order_id = ? AND product_id = ? AND color_id = ? AND size_id = ?";
 
-    $add_item_prep = $db->link->prepare($add_item_q);
+    $add_item_prep = Database::$link->prepare($add_item_q);
     $add_item_prep->bind_param("iiiii", $quantity, $order_id, $product_id, $color_id, $size_id);
 
     if (!$add_item_prep->execute()) {
