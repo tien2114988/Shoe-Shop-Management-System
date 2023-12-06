@@ -31,6 +31,7 @@ if ($user_id) {
 
     if (!$res) {
         // Create new order
+        // Create new order
         $create_order_q = " INSERT INTO orderdetails (customer_id, is_cart) VALUES ({mysqli_real_escape_string($user_id)}, TRUE)";
         $prep_stmt = mysqli_prepare(Database::$link, $create_order_q);
 

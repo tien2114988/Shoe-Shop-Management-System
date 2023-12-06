@@ -156,11 +156,13 @@ else {
                                 <p class="text-center mb-0">GIỎ HÀNG</p>
                                 <hr class="hr hr-blurry w-75 my-2 mx-auto" />
                                 <div>
-                                    <?php if ($cart_items) { ?>
-                                    <?php foreach ($cart_items as $cart_item) { ?>
-                                        <?php $uri = './?detail_item&&product_id='.$cart_item['product_id'].'&&color_id='.$cart_item['color_id'].'&&size_id='.$cart_item['size_id'] ?>
-
-                                        <a class="row g-0 border link-underline link-underline-opacity-0 text-black header__cart-item" href="<?php echo $uri ?>">
+                                    <?php if ($cart_items) {
+                                        foreach ($cart_items as $cart_item) {
+                                            if ($cart_item["cart_quantity"] == 0) {
+                                                continue;
+                                            }
+                                        ?>
+                                        <a class="row g-0 border link-underline link-underline-opacity-0 text-black header__cart-item" href="./detail-item.html">
                                             <div class="col-md-4">
                                                 <img src="<?php echo $cart_item["product_img"] ?>" class="img-fluid rounded-start" alt="...">
                                             </div>
@@ -177,8 +179,7 @@ else {
                                                 </div>
                                             </div>
                                         </a>
-                                    <?php } ?>
-                                    <?php } ?>
+                                    <?php } }  ?>
                                 </div>
                                 <?php if ($total_price) { ?>
                                 <div class="row justify-content-end mx-0 my-2">
