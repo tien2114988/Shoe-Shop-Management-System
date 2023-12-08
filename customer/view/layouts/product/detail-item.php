@@ -1,3 +1,9 @@
+<?php $user_id = "null";
+if (isset($_SESSION['user-id'])) {
+    $user_id = $_SESSION['user-id'];
+}
+?>
+
 <div class="detail-item w-85 mx-auto">
   <div class="d-flex">
     <div class="col w-50">
@@ -41,7 +47,7 @@
     </div>
 
     <div class="order">
-      <button type="button" class="w-50 fs-5 btn btn-dark m-5" onclick="limit_quantity(<?php echo $quantity; ?>)">Đặt mua</button>
+      <button type="button" id="buy-btn" class="w-50 fs-5 btn btn-dark m-5" onclick="add_item_handler(<?php echo $quantity; ?>, <?php echo $user_id ?>)">Đặt mua</button>
     </div>
 
 
@@ -66,6 +72,40 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-primary mx-auto" onclick="closeModal()">OK</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal" id="add-item-error" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Có lỗi đã xảy ra :) </h5>
+                </div>
+                <div class="modal-body">
+                    <p>Vui lòng thử lại sau :))).</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary mx-auto" onclick="closeModal()">OK</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal" id="add-item-success" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Thêm sản phẩm thành công :)</h5>
+                </div>
+                <div class="modal-body">
+                    <p>Mời bạn mua sắm tiếp.</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary mx-auto" onclick="location.reload()">OK</button>
                 </div>
             </div>
         </div>
